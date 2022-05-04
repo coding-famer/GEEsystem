@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.vcampus.dao.IGoodsHistoryMapper">
+
+    <insert id="insertGoodsHistory" parameterType="GoodsHistory">
+        INSERT INTO `goodsHistory`
+            (id,dealTime,quantity,price)
+        VALUES
+            (#{id},NOW(),#{quantity},#{price})
+    </insert>
+
+    <select id="getMonthSum" parameterType="Integer"
+            resultType="Integer">
+        SELECT SUM(quantity) FROM `goodsHistory` WHERE month(dealTime) =
+                                              #{_parameter}
+    </select>
+
+    <select id="getMonthSaleMoney" parameterType="Integer"
+            resultType="BigDecimal">
+        SELECT SUM(price) FROM `goodsHistory` WHERE month(dealTime) =
+                                                       #{_parameter}
+    </select>
+</mapper>

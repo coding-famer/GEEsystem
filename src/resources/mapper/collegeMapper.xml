@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.vcampus.dao.ICollegeMapper">
+
+    <select id="listAllInfo" resultType="College">
+        SELECT * FROM college
+    </select>
+
+
+    <select id="listInfo" parameterType="Map"
+            resultType="College">
+        SELECT * FROM `college`
+        WHERE `cname`= #{college} AND `mcatid` = #{major}
+    </select>
+
+    <select id="listInfoOnlyByMajor" parameterType="String"
+            resultType="College">
+        SELECT * FROM `college`
+        WHERE  `mcatid` = #{major}
+    </select>
+
+
+    <select id="listInfoOnlyByCollege" parameterType="String"
+            resultType="College">
+        SELECT * FROM `college`
+        WHERE  `cname`= #{college}
+    </select>
+
+    <insert id="insertInfo" parameterType="Map">
+        INSERT INTO `college`
+            (cid,cname,mid,mname,entry2022,entry2021,entry2020,mcatid)
+        VALUES
+            (#{cid},#{cname},#{mid},#{mname},#{entry2022},#{entry2021},#{entry2020},#{mcatid})
+    </insert>
+
+    <update id="changeInfo" parameterType="Map">
+        UPDATE `college` SET
+            entry2022=#{entry2022},entry2021=#{entry2021},entry2020=#{entry2020}
+            WHERE cname = #{cname} AND mname=#{mname}
+    </update>
+
+    <delete id="deleteInfo" parameterType="Map">
+        DELETE FROM college WHERE cname=#{cname} AND mname=#{mname}
+    </delete>
+
+</mapper>

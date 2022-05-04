@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <!-- 数据库JDBC配置文件 -->
+    <properties resource="resources/database.properties"/>
+
+    <!-- 驼峰自动转换 -->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <!-- 设置别名和包扫描 -->
+    <typeAliases>
+        <typeAlias type="com.vcampus.entity.Student" alias="Student" />
+        <typeAlias type="com.vcampus.entity.Admin" alias="Admin" />
+        <typeAlias type="com.vcampus.entity.DealHistory" alias="DealHistory" />
+        <typeAlias type="com.vcampus.entity.Goods" alias="Goods" />
+        <typeAlias type="com.vcampus.entity.College" alias="College" />
+
+    </typeAliases>
+
+    <!-- 环境配置 -->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC" />
+            <dataSource type="com.vcampus.util.c3p0DataSourceFactory">
+                <property name="driverClass" value="com.mysql.jdbc.Driver" />
+                <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/test" />
+                <property name="user" value="root" />
+                <property name="password" value="12345678" />
+                <property name="initialPoolSize" value="10" />
+                <property name="maxPoolSize" value="20" />
+                <property name="minPoolSize" value="5" />
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- 关系映射文件 -->
+    <mappers>
+        <mapper resource="resources/mapper/studentMapper.xml" />
+        <mapper resource="resources/mapper/adminMapper.xml" />
+        <mapper resource="resources/mapper/dealHistoryMapper.xml"/>
+        <mapper resource="resources/mapper/goodsMapper.xml"/>
+        <mapper resource="resources/mapper/collegeMapper.xml"/>
+
+
+    </mappers>
+
+</configuration>
+

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.vcampus.dao.IStudentMapper">
+
+    <!-- Used By Auth Module -->
+    <select id="verifyStudent" parameterType="Student"
+            resultType="boolean">
+        SELECT COUNT(*) FROM `students` WHERE
+            `cardNumber`=#{cardNumber} AND `password`=#{password}
+    </select>
+    <select id="getStudentDetailByCardNumber" parameterType="String"
+            resultType="Student">
+        SELECT * FROM `students` WHERE
+            `cardNumber`=#{cardNumber}
+    </select>
+
+    <select id="getNameByCardNumber" parameterType="String"
+            resultType="String">
+        SELECT `name` FROM `students` WHERE
+            `cardNumber`=#{cardNumber}
+    </select>
+
+    <select id="getSaltByCardNumber" parameterType="String"
+            resultType="String">
+        SELECT `salt` FROM `students` WHERE
+            `cardNumber`=#{cardNumber}
+    </select>
+
+    <select id="getPasswordByCardNumber" parameterType="String"
+            resultType="String">
+        SELECT `password` FROM `students` WHERE
+            `cardNumber`=#{cardNumber}
+    </select>
+
+    <insert id="insertStudent" parameterType="Student">
+        INSERT INTO
+            `students` VALUES ( #{name},"","",#{cardNumber}, #{studentNumber},
+                               #{bankAccount},"","",0,"", #{school},  #{dormAddress}, #{gender},  #{email}, #{phoneNumber},
+                                "")
+    </insert>
+
+    <delete id="deleteStudent" parameterType="String">
+        DELETE FROM
+            `students` WHERE cardNumber = #{cardNumber}
+    </delete>
+
+    <select id="searchStudentByCardNumber" parameterType="String"
+            resultType="Integer">
+        SELECT COUNT(*) FROM `students` WHERE `cardNumber` =
+                                                #{cardNumber}
+    </select>
+
+    <select id="searchStudentByStudentNumber" parameterType="String"
+            resultType="Integer">
+        SELECT COUNT(*) FROM `students` WHERE `studentNumber` =
+                                                #{studentNumber}
+    </select>
+
+    <update id="switchStudent" parameterType="Student">
+        UPDATE `students` SET
+                                `school` = #{school}, `studentNumber` = #{studentNumber} WHERE
+            `cardNumber` = #{cardNumber}
+    </update>
+
+    <select id="tableDisplay" parameterType="Map"
+            resultType="Student">
+        SELECT `cardNumber`, `studentNumber`, `school`,`name`
+        FROM `students`
+        WHERE `studentNumber` LIKE
+              CONCAT(#{school},'_',#{grade},'%')
+    </select>
+
+    <select id="getBalance" parameterType="String"
+            resultType="BigDecimal">
+        SELECT `balance` FROM `students` WHERE `cardNumber` =
+                                                 #{cardNumber} LIMIT 1
+    </select>
+
+    <!-- 充钱 -->
+    <update id="chargeCard" parameterType="Map">
+        UPDATE `students` SET
+            `balance` =  `balance` + #{money} WHERE `cardNumber`
+                                                       = #{cardNumber}
+        LIMIT 1
+    </update>
+
+    <update id="resetPassword" parameterType="Map">
+        UPDATE `students` SET
+            `password` = #{password} WHERE `cardNumber`
+                                               = #{cardNumber}
+        LIMIT 1
+    </update>
+
+    <select id="getBankAccountByCardNumber" parameterType="String"
+            resultType="String">
+        SELECT `bankAccount` FROM `students` WHERE
+            `cardNumber`=#{cardNumber}
+    </select>
+
+    <update id="setBalance" parameterType="Map">
+        UPDATE `students` SET
+            `balance` = #{money} WHERE `cardNumber`
+                                                       = #{cardNumber}
+        LIMIT 1
+    </update>
+
+    <select id="getLossStatusByCardNumber" parameterType="String"
+            resultType="String">
+        SELECT `lossStatus` FROM `students` WHERE
+            `cardNumber`=#{cardNumber}
+    </select>
+
+    <update id="setLossStatusByCardNumber" parameterType="String">
+        UPDATE `students` SET
+            `lossStatus` = 'LOST' WHERE `cardNumber`
+                                                       = #{cardNumber}
+        LIMIT 1
+    </update>
+
+    <update id="setFoundStatusByCardNumber" parameterType="String">
+        UPDATE `students` SET
+            `lossStatus` = 'NORMAL' WHERE `cardNumber`
+                                          = #{cardNumber}
+        LIMIT 1
+    </update>
+
+    <select id="getDormAddress" parameterType="String"
+            resultType="String">
+        SELECT `dormAddress` FROM `students` WHERE
+            `cardNumber`=#{cardNumber}
+    </select>
+
+    <select id="getSelectedCourses" parameterType="String"
+            resultType="String">
+        SELECT `selectedcourse` FROM `students` WHERE
+            `cardNumber`=#{cardNumber} LIMIT 1
+    </select>
+
+    <update id="setSelectedCourses" parameterType="Map">
+        UPDATE students
+        SET `selectedcourse` = #{content} WHERE `cardNumber` = #{cardNumber} LIMIT 1
+    </update>
+
+
+    <update id="resetPhoneNumber" parameterType="Map">
+        UPDATE `students` SET
+            `phoneNumber` =  #{phoneNumber} WHERE `cardNumber`
+                                            = #{cardNumber}
+        LIMIT 1
+    </update>
+
+    <update id="resetEmail" parameterType="Map">
+        UPDATE `students` SET
+            `email` =  #{email} WHERE `cardNumber`
+                                                      = #{cardNumber}
+        LIMIT 1
+    </update>
+
+    <select id="fuzzySearchByName" parameterType="String"
+            resultType="Student">
+        SELECT *FROM students WHERE name LIKE '%${name}%'
+    </select>
+
+    <select id="fuzzySearchByCard" parameterType="String"
+            resultType="Student">
+        SELECT *FROM students WHERE cardNumber LIKE '%${cardNumber}%'
+    </select>
+
+    <select id="getBankAccountPassword" parameterType="String"
+            resultType="String">
+        SELECT `bankAccountPassword` FROM `students` WHERE
+            `cardNumber`=#{cardNumber}
+    </select>
+
+
+    <select id="getBankAccountPasswordSalt" parameterType="String"
+            resultType="String">
+        SELECT `bankAccountPasswordSalt` FROM `students` WHERE
+            `cardNumber`=#{cardNumber}
+    </select>
+
+    <select id="fuzzySearchBySchool" parameterType="String"
+            resultType="Student">
+        SELECT *FROM students WHERE school LIKE '%${school}%'
+    </select>
+
+    <select id="fuzzySearchByGender" parameterType="String"
+            resultType="Student">
+        SELECT *FROM students WHERE gender LIKE '%${gender}%'
+    </select>
+
+    <select id="fuzzySearchByNameAndCard" parameterType="Student"
+            resultType="Student">
+        SELECT *FROM students WHERE name LIKE '%${name}%' AND
+            cardNumber LIKE '%${cardNumber}%'
+    </select>
+
+    <select id="fuzzySearchByNameAndSchool" parameterType="Student"
+            resultType="Student">
+        SELECT *FROM students WHERE name LIKE '%${name}%' AND
+                                        school LIKE '%${school}%'
+    </select>
+
+    <select id="fuzzySearchByNameAndGender" parameterType="Student"
+            resultType="Student">
+        SELECT *FROM students WHERE name LIKE '%${name}%' AND
+            gender LIKE '%${gender}%'
+    </select>
+
+    <select id="fuzzySearchByCardAndSchool" parameterType="Student"
+            resultType="Student">
+        SELECT *FROM students WHERE cardNumber LIKE '%${cardNumber}%' AND
+            school LIKE '%${school}%'
+    </select>
+
+    <select id="fuzzySearchByCardAndGender" parameterType="Student"
+            resultType="Student">
+        SELECT *FROM students WHERE cardNumber LIKE '%${cardNumber}%' AND
+            gender LIKE '%${gender}%'
+    </select>
+
+    <select id="fuzzySearchBySchoolAndGender" parameterType="Student"
+            resultType="Student">
+        SELECT *FROM students WHERE school LIKE '%${school}%' AND
+            gender LIKE '%${gender}%'
+    </select>
+
+    <select id="fuzzySearchByNameAndCardAndSchool" parameterType="Student"
+            resultType="Student">
+        SELECT *FROM students WHERE name LIKE '%${name}%' AND
+            cardNumber LIKE '%${cardNumber}%' AND school LIKE '%${school}%'
+    </select>
+
+    <select id="fuzzySearchByNameAndCardAndGender" parameterType="Student"
+            resultType="Student">
+        SELECT *FROM students WHERE name LIKE '%${name}%' AND
+            cardNumber LIKE '%${cardNumber}%' AND gender LIKE '%${gender}%'
+    </select>
+
+    <select id="fuzzySearchByCardAndSchoolAndGender" parameterType="Student"
+            resultType="Student">
+        SELECT *FROM students WHERE cardNumber LIKE '%${cardNumber}%' AND school LIKE '%${school}%'
+                                AND gender LIKE '%${gender}%'
+    </select>
+
+    <select id="fuzzySearchByNameAndSchoolAndGender" parameterType="Student"
+            resultType="Student">
+        SELECT *FROM students WHERE name LIKE '%${name}%' AND school LIKE '%${school}%'
+                                AND gender LIKE '%${gender}%'
+    </select>
+
+    <select id="fuzzySearchByNameAndCardAndSchoolAndGender" parameterType="Student"
+            resultType="Student">
+        SELECT *FROM students WHERE name LIKE '%${name}%' AND cardNumber LIKE '%${cardNumber}%'
+                                AND school LIKE '%${school}%' AND gender LIKE '%${gender}%'
+    </select>
+
+    <update id="resetStudentNumberByCard" parameterType="Map">
+        UPDATE students
+        SET `studentNumber` = #{studentNumber} WHERE cardNumber=#{cardNumber}
+    </update>
+
+    <update id="resetSchoolByCard" parameterType="Map">
+        UPDATE students
+        SET `school` = #{school} WHERE cardNumber=#{cardNumber}
+    </update>
+
+    <update id="resetDormByCard" parameterType="Map">
+        UPDATE students
+        SET `dormAddress` = #{dormAddress} WHERE cardNumber=#{cardNumber}
+    </update>
+
+</mapper>

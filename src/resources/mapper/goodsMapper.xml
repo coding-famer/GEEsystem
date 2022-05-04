@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.vcampus.dao.IGoodsMapper">
+
+    <select id="listAllGoods" resultType="Goods">
+        SELECT * FROM goods
+    </select>
+
+    <select id="searchGoods" parameterType="String"
+            resultType="Goods">
+        SELECT * FROM goods WHERE `name` LIKE "%"#{name}"%"
+    </select>
+
+    <select id="listGoodsByCategory" parameterType="String"
+            resultType="Goods">
+        SELECT * FROM goods WHERE `category` = #{category}
+    </select>
+
+    <insert id="insertNewGoods" parameterType="Goods">
+        INSERT INTO
+            `goods` VALUES (#{id}, #{name}, #{category},
+                                 #{price}, #{pic}, #{remaining},
+                                 #{description}, #{status})
+    </insert>
+
+    <insert id="insertNewGoodsWithoutId" parameterType="Goods">
+        INSERT INTO `goods` (`name`, `category`, `price`, `pic`, `remaining`, `description`, `status`)
+        VALUES (#{name}, #{category},
+                            #{price}, #{pic}, #{remaining},
+                            #{description}, #{status})
+    </insert>
+
+    <select id="manageListGoods" parameterType="Goods"
+            resultType="Goods">
+        SELECT * FROM goods WHERE `name` LIKE "%"#{name}"%" OR
+		category LIKE "%"#{category}"%"
+    </select>
+
+    <delete id="deleteGoods" parameterType="Goods">
+        DELETE FROM
+            `goods` WHERE name = #{name} AND category = #{category} AND price =
+                                                                        #{price} AND remaining = #{remaining}
+    </delete>
+
+    <select id="getGoodsStorageById" parameterType="int"
+            resultType="int">
+        SELECT `remaining` FROM `goods` WHERE `id` = #{id} LIMIT 1
+    </select>
+
+    <select id="getGoodsStorageByName" parameterType="String"
+            resultType="int">
+        SELECT `remaining` FROM `goods` WHERE `name` = #{name} LIMIT 1
+    </select>
+
+    <update id="buySomething" parameterType="Map">
+        UPDATE `goods` SET `remaining` = `remaining` - #{howmany} WHERE `id` = #{id} LIMIT 1
+    </update>
+
+
+</mapper>
