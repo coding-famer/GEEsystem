@@ -11,6 +11,8 @@ import com.vcampus.client.main.manager.AppAdminInfoFrame;
 import com.vcampus.client.main.shop.AppShopAdmin;
 import com.vcampus.client.main.student.StudentInfo.AppStuInfo;
 import com.vcampus.client.main.shop.AppShop;
+import com.vcampus.client.main.recommend.AppRec;
+
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -256,7 +258,7 @@ public class AppStudent extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 if(e.getSource()== InfoLabel3)
                 {
-                    AppShopAdmin app=new AppShopAdmin();
+                    AppRec app=new AppRec();
                     app.setVisible(true);
                 }
             }
