@@ -31,7 +31,7 @@
                 <property name="driverClass" value="com.mysql.jdbc.Driver" />
                 <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/test" />
                 <property name="user" value="root" />
-                <property name="password" value="12345678" />
+                <property name="password" value="717301" />
                 <property name="initialPoolSize" value="10" />
                 <property name="maxPoolSize" value="20" />
                 <property name="minPoolSize" value="5" />
