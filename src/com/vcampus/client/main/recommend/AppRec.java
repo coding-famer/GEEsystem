@@ -2,22 +2,31 @@ package com.vcampus.client.main.recommend;
 
 
 import com.vcampus.client.main.App;
+import com.vcampus.entity.College;
 import com.vcampus.net.Request;
+import com.vcampus.net.Response;
 import com.vcampus.util.ResponseUtils;
+import com.vcampus.util.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.HashMap;
+import java.util.List;
+
 
 public class AppRec extends  JFrame{
 
     private static JPanel contentPane;
+
+    private static String selectedCollege = "";
+    private static String selectedMajor = "";
+
+    private static DefaultTableModel tableModel;
+    private static List<College> list;
+
 
     public AppRec(){
         setResizable(true);
@@ -51,18 +60,63 @@ public class AppRec extends  JFrame{
 
 
 
-        JTextField txt_1 = new JTextField();
-        txt_1.setBounds(400, 100, 170, 40);
-        txt_1.setEditable(true);
-        txt_1.setText("");
-        txt_1.setForeground(Color.GRAY);
-        this.contentPane.add(txt_1);
-        JTextField txt_2 = new JTextField();
-        txt_2.setBounds(400, 160, 170, 40);
-        txt_2.setEditable(true);
-        txt_2.setText("");
-        txt_2.setForeground(Color.GRAY);
-        this.contentPane.add(txt_2);
+        JComboBox cmbCollegeName = new JComboBox();
+        cmbCollegeName.addItem("北京大学");
+        cmbCollegeName.addItem("清华大学");
+        cmbCollegeName.addItem("中国人民大学");
+        cmbCollegeName.addItem("上海交通大学");
+        cmbCollegeName.addItem("南京大学");
+        cmbCollegeName.addItem("东南大学");
+        cmbCollegeName.setBounds(400, 100, 170, 40);
+        contentPane.add(cmbCollegeName);
+        cmbCollegeName.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(ItemEvent.SELECTED == e.getStateChange()){
+                    selectedCollege = e.getItem().toString();
+//                    handleCategorySelection(selectedCollege,selectedMajor);
+                }
+            }
+
+        });
+
+
+
+        JComboBox cmbMajorName = new JComboBox();
+        cmbMajorName.addItem("计算机类");
+        cmbMajorName.addItem("经济类");
+        cmbMajorName.setBounds(400, 160, 170, 40);
+        contentPane.add(cmbMajorName);
+        cmbMajorName.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(ItemEvent.SELECTED == e.getStateChange()){
+                    selectedMajor = e.getItem().toString();
+                    if(selectedMajor.equals("计算机类"))
+                        selectedMajor= String.valueOf(0);
+                    else if(selectedMajor.equals("经济类"))
+                        selectedMajor= String.valueOf(1);
+//                    handleCategorySelection(selectedCollege,selectedMajor);
+                }
+            }
+        });
+
+
+
+
+
+//        JTextField txt_1 = new JTextField();
+//        txt_1.setBounds(400, 100, 170, 40);
+//        txt_1.setEditable(true);
+//        txt_1.setText("");
+//        txt_1.setForeground(Color.GRAY);
+//        this.contentPane.add(txt_1);
+//        JTextField txt_2 = new JTextField();
+//        txt_2.setBounds(400, 160, 170, 40);
+//        txt_2.setEditable(true);
+//        txt_2.setText("");
+//        txt_2.setForeground(Color.GRAY);
+//        this.contentPane.add(txt_2);
         JTextField txt_3 = new JTextField();
         txt_3.setBounds(400, 220, 170, 40);
         txt_3.setEditable(true);
@@ -162,45 +216,100 @@ public class AppRec extends  JFrame{
         Recommend.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String cid = txt_1.getText().trim();
-                String cname = txt_2.getText().trim();
-                String mid = txt_3.getText().trim();
-                String mname = txt_4.getText().trim();
-                if(txt_5.getText().trim().equals("")||txt_6.getText().trim().equals("")||txt_7.getText().trim().equals("")){
+//                String uni = txt_1.getText().trim();
+//                String major = txt_2.getText().trim();
+
+                if(txt_3.getText().trim().equals("")||txt_4.getText().trim().equals("")||
+                        txt_5.getText().trim().equals("")||txt_6.getText().trim().equals("")||
+                        txt_7.getText().trim().equals("")||txt_8.getText().trim().equals("")){
                     JOptionPane.showMessageDialog(null, "项不能为空或不符合格式！");
                     return;
                 }
-                int entry2022 = Integer.parseInt(txt_5.getText().trim());
-                int entry2021 = Integer.parseInt(txt_6.getText().trim());
-                int entry2020 = Integer.parseInt(txt_7.getText().trim());
-                String mcatid = txt_8.getText().trim();
-                if(cid.equals("")||cname.equals("")||mid.equals("")||mname.equals("")||mcatid.equals("")){
-                    JOptionPane.showMessageDialog(null, "项不能为空或不符合格式！");
-                    return;
+                int gaokao = Integer.parseInt(txt_3.getText().trim());
+                int CET4 = Integer.parseInt(txt_4.getText().trim());
+                int CET6 = Integer.parseInt(txt_5.getText().trim());
+                int GPA = Integer.parseInt(txt_6.getText().trim());
+                int math = Integer.parseInt(txt_7.getText().trim());
+                int majorGPA = Integer.parseInt(txt_8.getText().trim());
+                System.out.println(selectedCollege);
+                System.out.println(selectedMajor);
+
+
+                HashMap<String,Object> StuInfo = new HashMap<String,Object>();
+                StuInfo.put("uni",selectedCollege);
+                StuInfo.put("major",selectedMajor);
+                StuInfo.put("gaokao",gaokao);
+                StuInfo.put("CET4",CET4);
+                StuInfo.put("CET6",CET6);
+                StuInfo.put("GPA",GPA);
+                StuInfo.put("math",math);
+                StuInfo.put("majorGPA",majorGPA);
+                System.out.print(StuInfo);
+
+                String collegeRec = ResponseUtils
+                        .getResponseByHash(new Request(App.connectionToServer, null, "com.vcampus.server.recommend.RecommendServer.getRec",
+                                new Object[]{StuInfo}).send())
+                        .getReturn(String.class);
+                if(!collegeRec.isEmpty()){
+                    JOptionPane.showMessageDialog(null, collegeRec);
                 }
-                else{
-                    HashMap<String,Object> insertInfo = new HashMap<String,Object>();
-                    insertInfo.put("cid",cid);
-                    insertInfo.put("cname",cname);
-                    insertInfo.put("mid",mid);
-                    insertInfo.put("mname",mname);
-                    insertInfo.put("entry2022",entry2022);
-                    insertInfo.put("entry2021",entry2021);
-                    insertInfo.put("entry2020",entry2020);
-                    insertInfo.put("mcatid",mcatid);
-                    Boolean flag = ResponseUtils
-                            .getResponseByHash(new Request(App.connectionToServer, null, "com.vcampus.server.college.CollegeServer.insertInfo",
-                                    new Object[]{insertInfo}).send())
-                            .getReturn(Boolean.class);
-                    if(flag){
-                        JOptionPane.showMessageDialog(null, "录入成功！");
-                    }
-                }
+
 
             }
         });
         contentPane.add(Recommend);
         Recommend.setBounds(600, 600, 180, 30);
     }
+
+
+
+
+//    public void handleCategorySelection(String college, String major) {
+//        tableModel.setRowCount(0);
+//        if (college.equals("所有院校") && major.equals("所有专业")) {
+//            list = ResponseUtils
+//                    .getResponseByHash(new Request(App.connectionToServer, null,
+//                            "com.vcampus.server.college.CollegeServer.listAllInfo", new Object[]{}).send())
+//                    .getListReturn(College.class);
+//        }
+//        else if(!(college.equals("所有院校"))&&!(major.equals("所有专业"))){
+//            HashMap<String,Object> conditionSelected = new HashMap<String,Object>();
+//            conditionSelected.put("college",selectedCollege);
+//            conditionSelected.put("major",selectedMajor);
+//
+//            System.out.println(conditionSelected);
+//            list = ResponseUtils
+//                    .getResponseByHash(new Request(App.connectionToServer, null,
+//                            "com.vcampus.server.college.CollegeServer.listInfo", new Object[]{conditionSelected}).send())
+//                    .getListReturn(College.class);
+//        }
+//        else if(college.equals("所有院校")&&!(major.equals("所有专业"))){
+//            list = ResponseUtils
+//                    .getResponseByHash(new Request(App.connectionToServer, null,
+//                            "com.vcampus.server.college.CollegeServer.listInfoOnlyByMajor", new Object[]{selectedMajor}).send())
+//                    .getListReturn(College.class);
+//        }
+//        else if(!(college.equals("所有院校"))&&major.equals("所有专业")){
+//            list = ResponseUtils
+//                    .getResponseByHash(new Request(App.connectionToServer, null,
+//                            "com.vcampus.server.college.CollegeServer.listInfoOnlyByCollege", new Object[]{selectedCollege}).send())
+//                    .getListReturn(College.class);
+//        }
+//
+//        if (list == null) {
+//            SwingUtils.showMessage(null, "ERROR", "提示");
+//        } else {
+//            for (int i = 0; i < list.size(); i++) {
+//                tableModel.addRow(new Object[]{
+//                        list.get(i).cname,
+//                        list.get(i).mname,
+//                        list.get(i).entry2022,
+//                        list.get(i).entry2021,
+//                        list.get(i).entry2020
+//                });
+//            }
+//        }
+//    }
+
 
 }
