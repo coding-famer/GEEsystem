@@ -18,7 +18,6 @@ public class ClientEntry {
             @Override
             public void run() {
                 try {
-                    WebLookAndFeel.install();
                     App app = new App();
                     //app.setVisible(true);
                 } catch (IOException e) {

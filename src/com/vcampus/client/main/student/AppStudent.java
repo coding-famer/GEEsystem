@@ -8,6 +8,7 @@ import com.vcampus.client.main.App;
 import com.vcampus.client.main.AppLife;
 import com.vcampus.client.main.college.AppCollege;
 import com.vcampus.client.main.manager.AppAdminInfoFrame;
+import com.vcampus.client.main.score.AppScore;
 import com.vcampus.client.main.shop.AppShopAdmin;
 import com.vcampus.client.main.student.StudentInfo.AppStuInfo;
 import com.vcampus.client.main.shop.AppShop;
@@ -203,7 +204,7 @@ public class AppStudent extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 if(e.getSource()== InfoLabel2)
                 {
-                    AppShopAdmin app=new AppShopAdmin();
+                    AppScore app=new AppScore();
                     app.setVisible(true);
                 }
             }
