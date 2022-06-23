@@ -33,20 +33,23 @@ public class RecommendServer {
         int score;
         String college = StuInfo.get("uni").toString();
         String major = StuInfo.get("major").toString();
-        StuInfo.get("gaokao");
-        StuInfo.get("CET4");
-        StuInfo.get("CET6");
-        StuInfo.get("GPA");
-        StuInfo.get("math");
-        StuInfo.get("majorGPA");
+        int gaokao = (int) StuInfo.get("gaokao");
+        int CET4 = (int) StuInfo.get("CET4");
+        int CET6 = (int) StuInfo.get("CET6");
+        int GPA = (int) StuInfo.get("GPA");
+        int math = (int) StuInfo.get("math");
+        int majorGPA = (int) StuInfo.get("majorGPA");
+        score = (gaokao + CET4/710*100 + CET6/710*100 + GPA + math + majorGPA)/6;
         System.out.print(StuInfo);
-        return 0;
+        return score;
     }
     public static String getCollege(int index){
         String college = null;
         List<List<Object>> rank;
         rank = getRank();
-        college = rank.get(index).get(1).toString();
+        int recIndex = (int) ((rank.size()-1) * (100 - index)/100);
+        System.out.print(recIndex);
+        college = rank.get(recIndex+1).get(1).toString();
         return college;
     }
 
