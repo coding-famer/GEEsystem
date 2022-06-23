@@ -20,6 +20,7 @@
         <typeAlias type="com.vcampus.entity.DealHistory" alias="DealHistory" />
         <typeAlias type="com.vcampus.entity.Goods" alias="Goods" />
         <typeAlias type="com.vcampus.entity.College" alias="College" />
+        <typeAlias type="com.vcampus.entity.StuScore" alias="StuScore" />
 
     </typeAliases>
 
@@ -46,6 +47,7 @@
         <mapper resource="resources/mapper/dealHistoryMapper.xml"/>
         <mapper resource="resources/mapper/goodsMapper.xml"/>
         <mapper resource="resources/mapper/collegeMapper.xml"/>
+        <mapper resource="resources/mapper/stuScoreMapper.xml"/>
 
 
     </mappers>
